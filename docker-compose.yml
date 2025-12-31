@@ -18,6 +18,8 @@ services:
         condition: service_healthy
     volumes:
       - ./src:/app/src
+      - ./knexfile.js:/app/knexfile.js
+    command: sh -c "npm run migrate && npm start"
     networks:
       - gaspre-network
 
