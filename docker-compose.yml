@@ -1,0 +1,52 @@
+services:
+  app:
+    build: .
+    container_name: gaspre-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=gaspre_user
+      - DB_PASSWORD=gaspre_password
+      - DB_NAME=gaspre_db
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./src:/app/src
+    networks:
+      - gaspre-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: gaspre-mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=gaspre_db
+      - MYSQL_USER=gaspre_user
+      - MYSQL_PASSWORD=gaspre_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gaspre-network
+
+volumes:
+  mysql_data:
+
+networks:
+  gaspre-network:
+    driver: bridge
+
