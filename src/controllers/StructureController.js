@@ -1,9 +1,7 @@
-const StructureMySqlRepository = require('../repositories/StructureMySqlRepository');
 const StructureService = require('../services/StructureService');
 
 class StructureController {
   constructor() {
-    this.repository = new StructureMySqlRepository();
     this.service = new StructureService();
   }
 
@@ -34,9 +32,7 @@ class StructureController {
    */
   getTree = async (req, res) => {
     try {
-      const structure = await this.repository.getByIdWithDescendants(
-        req.params.id
-      );
+      const structure = await this.service.getTree(req.params.id);
       if (!structure) {
         return res
           .status(404)

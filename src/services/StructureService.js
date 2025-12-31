@@ -18,6 +18,15 @@ class StructureService {
   async listStructures({ page = 1, size = 10, filter = {} } = {}) {
     return this.repository.findPaths({ page, size, filter });
   }
+
+  /**
+   * Get structure tree by ID with all descendants (max 10 levels)
+   * @param {string} id - UUID of the structure
+   * @returns {Promise<Object|null>}
+   */
+  async getTree(id) {
+    return this.repository.getByIdWithDescendants(id);
+  }
 }
 
 module.exports = StructureService;
