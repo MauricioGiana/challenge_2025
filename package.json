@@ -8,7 +8,9 @@
     "dev": "nodemon src/index.js",
     "migrate": "knex migrate:latest",
     "migrate:rollback": "knex migrate:rollback",
-    "migrate:make": "knex migrate:make"
+    "migrate:make": "knex migrate:make",
+    "seed": "knex seed:run",
+    "seed:make": "knex seed:make"
   },
   "keywords": [
     "express",
